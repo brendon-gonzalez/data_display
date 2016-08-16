@@ -59,7 +59,7 @@ export default function configureStore() {
   if (!firebaseDeps) {
     firebase.initializeApp(config.firebase);
     firebaseDeps = {
-      firebase: firebase.database().ref(),
+      firebase: firebase.database().ref('traffic_data'),
       firebaseDatabase: firebase.database
     };
   }
