@@ -11,7 +11,7 @@ class App extends Component {
         {this.props.data && this.props.data.map((row, i) =>
           <p key={i}>{i} {row.datetime} - Lat: {row.lat} - Lon {row.long}</p>
         )}
-        <button onClick={() => this.props.testFireBase(500)}>Increase</button>
+        <button onClick={() => this.props.testFireBase()}>Fetch Data</button>
       </div>
     );
   }
