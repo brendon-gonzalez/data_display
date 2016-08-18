@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-import firebase from './Firebase.reducer';
+import map from './Map.reducer';
 
 export default combineReducers({
-  firebase
+  map
 });
