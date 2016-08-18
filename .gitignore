@@ -2,3 +2,4 @@ node_modules
 .DS_Store
 raw
 transformed
+dist/bundle.js
