@@ -3,11 +3,6 @@ import Component from 'react-pure-render/component';
 import { GoogleMapLoader, GoogleMap, Marker, DrawingManager } from 'react-google-maps';
 
 class Map extends Component {
-  componentWillReceiveProps() {
-    console.log(this.props.mapBounds.get('lats'));
-    console.log(this.props.mapBounds.get('lngs'));
-  }
-
   onDrawingComplete(e) {
     this.props.onDrawingComplete(e);
   }

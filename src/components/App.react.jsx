@@ -11,6 +11,9 @@ class App extends Component {
   }
 
   onDrawingComplete(e) {
+    // Slightly too narrow. The structure is in place for a more
+    // complex poly, but for the given time constraints, i'm just
+    // doing rectangles/squares.
     const ne = e.overlay.getBounds().getNorthEast();
     const sw = e.overlay.getBounds().getSouthWest();
     this.props.setGeofence({

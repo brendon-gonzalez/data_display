@@ -4,10 +4,7 @@ var Converter = require('csvtojson').Converter;
 var converter = new Converter({});
 
 function isOdd(num) {
-  if (num / 2 === Math.floor(num / 2)) {
-    return false;
-  }
-  return true;
+  return (num % 2 === 1);
 }
 
 module.exports = function transformData(filePath, callback) {
