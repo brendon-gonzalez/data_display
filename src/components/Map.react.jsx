@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Component from 'react-pure-render/component';
-import { GoogleMapLoader, GoogleMap, Marker, DrawingManager } from 'react-google-maps';
+import { GoogleMapLoader, GoogleMap, Marker, DrawingManager, Rectangle } from 'react-google-maps';
 
 class Map extends Component {
   onDrawingComplete(e) {
@@ -25,15 +25,26 @@ class Map extends Component {
   }
 
   render() {
-    const { mapPoints, mapBounds } = this.props;
-    let JSX_markers = null;
+    const { pickUps, mapBounds, showDropOffs, rect } = this.props;
+    let JSX_pickUps = null;
+    let JSX_dropOffs = null;
+    let JSX_rect = null;
 
-    if (mapPoints) {
-      JSX_markers = mapPoints.map((marker, index) => {
+    if (rect) {
+      JSX_rect = (
+        <Rectangle
+          bounds={rect.toJS()}
+        />
+      )
+    }
+    if (pickUps) {
+      JSX_pickUps = pickUps.map((marker, index) => {
         if (mapBounds.get('lngs').length && mapBounds.get('lats').length) {
           if (this.inBounds(marker.position.lng, marker.position.lat)) {
             return (
-              <Marker {...marker} />
+              <Marker
+                {...marker}
+              />
             );
           }
         } else {
@@ -43,32 +54,51 @@ class Map extends Component {
         }
       });
     }
+
+    if (showDropOffs) {
+      JSX_dropOffs = pickUps.map((marker, index) => {
+        if (mapBounds.get('lngs').length && mapBounds.get('lats').length) {
+          if (this.inBounds(marker.position.lng, marker.position.lat)) {
+            return (
+              <Marker
+                {...marker.dropOff}
+              />
+            );
+          }
+        } else {
+          return (
+            <Marker {...marker.dropOff} />
+          )
+        }
+      });
+    }
     return (
-      <section style={{height: "100%", width: '100%', position: 'absolute'}}>
+      <section className="map-container">
         <GoogleMapLoader
           containerElement={
             <div
               {...this.props.containerElementProps}
-              style={{
-              height: "100%",
-              }}
+              className="map"
             />
           }
           googleMapElement={
             <GoogleMap
-            ref={(map) => console.log(map)}
-            defaultZoom={14}
-            defaultCenter={{ lat: 40.746, lng: -73.9884 }}
+              defaultZoom={14}
+              defaultCenter={{ lat: 40.746, lng: -73.9884 }}
             >
-              <DrawingManager
-                onOverlaycomplete={(e) => this.onDrawingComplete(e)}
-                defaultOptions={{
-                  drawingControlOptions: {
-                    drawingModes: ['rectangle']
-                  }
-                }}
-              />
-              {JSX_markers}
+              {!rect &&
+                <DrawingManager
+                  onOverlaycomplete={(e) => this.onDrawingComplete(e)}
+                  defaultOptions={{
+                    drawingControlOptions: {
+                      drawingModes: ['rectangle']
+                    }
+                  }}
+                />
+              }
+              {JSX_pickUps}
+              {JSX_dropOffs}
+              {JSX_rect}
             </GoogleMap>
           }
         />
